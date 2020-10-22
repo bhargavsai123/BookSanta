@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity,TextInput, Alert, Modal, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View,StyleSheet, Text, Image, TouchableOpacity,TextInput, Alert, Modal, ScrollView, KeyboardAvoidingView } from 'react-native';
 import LottieView from 'lottie-react-native';
 import db from '../config';
 import firebase from 'firebase';
@@ -20,11 +20,13 @@ export default class WelcomeScreen extends Component {
   }
   showModal=()=>{
     return(
-      <Modal animationType='fade' transparent={true} visible={this.state.isModalVisible}>
-        <View>
-          <ScrollView>
+      <Modal  animationType='fade' transparent={true} visible={this.state.isModalVisible}>
+        <View style={styles.modalContainer} >
+          <ScrollView >
             <KeyboardAvoidingView>
-              <TextInput placeholder = 'First Name' style={styles.loginBox} maxLength = {8}/>
+              <TextInput placeholder='First Name'
+                style={styles.loginBox}
+                maxLength={8} />
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
@@ -62,10 +64,6 @@ export default class WelcomeScreen extends Component {
       <View style={styles.container}>
         <View style={styles.profileContainer}>
           {this.showModal()}
-          <LottieView
-      source={require('../assets/13015-santa-claus.json')}
-      style={{width:"60%"}}
-      autoPlay loop />
           <Text style={styles.title}>Book Santa</Text>
         </View>
         <View style={styles.buttonContainer}>
@@ -160,5 +158,18 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flex:1,
     alignItems:'center'
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    alignSelf: 'center',
+    borderRadius: 10,
+    backgroundColor: '#F8BE85',
+    opacity: 0.95,
+    width: '90%',
+    height: '10%',
+    shadowColor: "#000",
+    shadowOpacity: 1,
+    shadowRadius: 10.32,
+    elevation: 200,
+  },
 })

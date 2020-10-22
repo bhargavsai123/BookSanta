@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 require('@firebase/firestore')
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBHdluTb07UNEKFK2btGDE4m9_Yo_bn0EQ",
   authDomain: "booksanta-c6a2f.firebaseapp.com",
   databaseURL: "https://booksanta-c6a2f.firebaseio.com",
@@ -12,6 +12,8 @@ var firebaseConfig = {
 };
   // Initialize Firebase
   
-  firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+ }
 
   export default firebase.firestore();
