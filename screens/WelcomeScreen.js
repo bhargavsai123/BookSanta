@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity,TextInput, Alert } from 'react-native';
-import SantaAnimation from '../components/SantaClaus.js';
+import { View, StyleSheet, Text, Image, TouchableOpacity,TextInput, Alert, Modal, ScrollView, KeyboardAvoidingView } from 'react-native';
+import LottieView from 'lottie-react-native';
 import db from '../config';
 import firebase from 'firebase';
 
@@ -9,10 +9,28 @@ export default class WelcomeScreen extends Component {
     super()
     this.state={
       emailId : '',
-      password: ''
+      password: '',
+      firstName: '',
+      lastName:'',
+      address:'',
+      contact:'',
+      confirmPassword: '',
+      isModalVisible:false,
     }
   }
-
+  showModal=()=>{
+    return(
+      <Modal animationType='fade' transparent={true} visible={this.state.isModalVisible}>
+        <View>
+          <ScrollView>
+            <KeyboardAvoidingView>
+              <TextInput placeholder = 'First Name' style={styles.loginBox} maxLength = {8}/>
+            </KeyboardAvoidingView>
+          </ScrollView>
+        </View>
+      </Modal>
+    )
+  }
   userLogin = (emailId, password)=>{
     firebase.auth().signInWithEmailAndPassword(emailId, password)
     .then(()=>{
@@ -34,7 +52,7 @@ export default class WelcomeScreen extends Component {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      return Alert.alert(errorMessage)
+      return Alert.alert(errorMessage) 
     });
   }
 
@@ -43,7 +61,11 @@ export default class WelcomeScreen extends Component {
     return(
       <View style={styles.container}>
         <View style={styles.profileContainer}>
-          <SantaAnimation/>
+          {this.showModal()}
+          <LottieView
+      source={require('../assets/13015-santa-claus.json')}
+      style={{width:"60%"}}
+      autoPlay loop />
           <Text style={styles.title}>Book Santa</Text>
         </View>
         <View style={styles.buttonContainer}>
@@ -78,7 +100,7 @@ export default class WelcomeScreen extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={()=>{this.userSignUp(this.state.emailId, this.state.password)}}
+            onPress={()=>{this.setState({isModalVisible : true})}}
             >
             <Text style={styles.buttonText}>SignUp</Text>
           </TouchableOpacity>
