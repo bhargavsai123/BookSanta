@@ -1,20 +1,21 @@
 /** @format */
 
-import * as React from 'react';
+import React, { Component } from 'react';
 import {
 	View,
 	Text,
+	KeyboardAvoidingView,
 	TextInput,
+	StyleSheet,
+	ScrollView,
 	TouchableOpacity,
 	Alert,
-	StatusBar,
-	StyleSheet,
 } from 'react-native';
-import db from '../config';
-import * as firebase from 'firebase';
 import MyHeader from '../components/myHeader';
+import db from '../config';
+import firebase from 'firebase';
 
-export default class Settings extends React.Component {
+export default class Settings extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -23,9 +24,10 @@ export default class Settings extends React.Component {
 			lastName: '',
 			address: '',
 			contact: '',
-			documentId: '',
+			docId: '',
 		};
 	}
+
 	getUserDetails = () => {
 		var email = firebase.auth().currentUser.email;
 		db.collection('users')
@@ -40,61 +42,84 @@ export default class Settings extends React.Component {
 						lastName: data.last_name,
 						address: data.address,
 						contact: data.contact,
-						documentId: doc.id,
+						docId: doc.id,
 					});
 				});
 			});
 	};
+
+	updateUserDetails = () => {
+		db.collection('users').doc(this.state.docId).update({
+			first_name: this.state.firstName,
+			last_name: this.state.lastName,
+			address: this.state.address,
+			contact: this.state.contact,
+		});
+
+		Alert.alert('Profile Updated Successfully');
+	};
+
 	componentDidMount() {
 		this.getUserDetails();
 	}
+
 	render() {
 		return (
-			<View style={{ flex: 1, backgroundColor: '#F8BE85' }}>
-				<MyHeader title={'Settings'} navigation={this.props.navigation} />
-				<View
-					style={{
-						flex: 1,
-						alignItems: 'center',
-						width: '100%',
-					}}>
+			<View style={styles.container}>
+				<MyHeader title='Settings' navigation={this.props.navigation} />
+				<View style={styles.formContainer}>
 					<TextInput
-						placeholder='First Name'
-						value={this.state.firstName}
-						placeholderTextColor='#ffff'
-						style={styles.loginBox}
+						style={styles.formTextInput}
+						placeholder={'First Name'}
 						maxLength={8}
 						onChangeText={(text) => {
-							this.setState({ firstName: text });
+							this.setState({
+								firstName: text,
+							});
 						}}
+						value={this.state.firstName}
 					/>
 					<TextInput
-						placeholder='Last Name'
+						style={styles.formTextInput}
+						placeholder={'Last Name'}
+						maxLength={8}
+						onChangeText={(text) => {
+							this.setState({
+								lastName: text,
+							});
+						}}
 						value={this.state.lastName}
-						placeholderTextColor='#ffff'
-						style={styles.loginBox}
-						onChangeText={(text) => {
-							this.setState({ lastName: text });
-						}}
 					/>
 					<TextInput
-						placeholder='Address'
-						placeholderTextColor='#ffff'
-						style={styles.loginBox}
+						style={styles.formTextInput}
+						placeholder={'Contact'}
+						maxLength={10}
+						keyboardType={'numeric'}
 						onChangeText={(text) => {
-							this.setState({ address: text });
+							this.setState({
+								contact: text,
+							});
+						}}
+						value={this.state.contact}
+					/>
+					<TextInput
+						style={styles.formTextInput}
+						placeholder={'Address'}
+						multiline={true}
+						onChangeText={(text) => {
+							this.setState({
+								address: text,
+							});
 						}}
 						value={this.state.address}
 					/>
-					<TextInput
-						placeholder='Contact'
-						value={this.state.contact}
-						placeholderTextColor='#ffff'
-						style={styles.loginBox}
-						onChangeText={(text) => {
-							this.setState({ contact: text });
-						}}
-					/>
+					<TouchableOpacity
+						style={styles.button}
+						onPress={() => {
+							this.updateUserDetails();
+						}}>
+						<Text style={styles.buttonText}>Save</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
@@ -102,14 +127,46 @@ export default class Settings extends React.Component {
 }
 
 const styles = StyleSheet.create({
-	loginBox: {
-		width: 300,
-		height: 40,
-		borderBottomWidth: 1.5,
-		borderColor: '#ff8a65',
-		fontSize: 20,
-		margin: 10,
-		color: '#ffffff',
-		paddingLeft: 10,
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	formContainer: {
+		flex: 1,
+		width: '100%',
+		alignItems: 'center',
+	},
+	formTextInput: {
+		width: '75%',
+		height: 35,
+		alignSelf: 'center',
+		borderColor: '#ffab91',
+		borderRadius: 10,
+		borderWidth: 1,
+		marginTop: 20,
+		padding: 10,
+	},
+	button: {
+		width: '75%',
+		height: 50,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 10,
+		backgroundColor: '#ff5722',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 8,
+		},
+		shadowOpacity: 0.44,
+		shadowRadius: 10.32,
+		elevation: 16,
+		marginTop: 20,
+	},
+	buttonText: {
+		fontSize: 25,
+		fontWeight: 'bold',
+		color: '#fff',
 	},
 });
