@@ -11,19 +11,23 @@ const MyHeader = (props) => {
 				<Icon
 					name='bars'
 					type='font-awesome'
-					color='#696969'
+					color='#ff8a65'
 					onPress={() => props.navigation.toggleDrawer()}
 				/>
 			}
 			centerComponent={{
 				text: props.title,
 				style: {
-					color: '#696969',
+					color: '#ff8a65',
 					fontSize: 20,
 					fontWeight: 'bold',
 				},
 			}}
 			backgroundColor='#F8BE85'
+			containerStyle={{
+				borderBottomWidth: 1,
+				borderBottomColor: '#ff8a65',
+			}}
 		/>
 	);
 };

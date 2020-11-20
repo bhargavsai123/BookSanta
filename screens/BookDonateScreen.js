@@ -7,6 +7,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	FlatList,
+	Alert,
 } from 'react-native';
 import * as firebase from 'firebase';
 import db from '../config';
@@ -46,7 +47,12 @@ export default class BookDonate extends React.Component {
 				subtitle={item.reason_request}
 				titleStyle={{ color: '#000000', fontWeight: 'bold' }}
 				rightElement={
-					<TouchableOpacity stlye={styles.button}>
+					<TouchableOpacity
+						stlye={styles.button}
+						onPress={() => {
+							this.props.navigation.navigate('RecieverDetails');
+							console.log('hi');
+						}}>
 						<Text>View</Text>
 					</TouchableOpacity>
 				}

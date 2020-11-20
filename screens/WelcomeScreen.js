@@ -85,7 +85,7 @@ export default class WelcomeScreen extends Component {
 								keyboardType='email-address'
 								style={styles.loginBox}
 								onChangeText={(text) => {
-									this.setState({ emailId: text });
+									this.setState({ emailId: text.toLowerCase() });
 								}}
 							/>
 							<TextInput
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
 	loginBox: {
 		width: 300,
 		height: 40,
-		borderBottomWidth: 1.5,
+		borderBottomWidth: 1   ,
 		borderColor: '#ff8a65',
 		fontSize: 20,
 		margin: 10,

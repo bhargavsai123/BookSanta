@@ -29,7 +29,9 @@ export default class Settings extends Component {
 	}
 
 	getUserDetails = () => {
-		var email = firebase.auth().currentUser.email;
+		var user = firebase.auth().currentUser;
+		var email = user.email;
+
 		db.collection('users')
 			.where('email_id', '==', email)
 			.get()
@@ -46,6 +48,7 @@ export default class Settings extends Component {
 					});
 				});
 			});
+		console.log(this.state.docId);
 	};
 
 	updateUserDetails = () => {
@@ -57,6 +60,13 @@ export default class Settings extends Component {
 		});
 
 		Alert.alert('Profile Updated Successfully');
+		this.setState({
+			firstName: '',
+			lastName: '',
+			address: '',
+			contact: '',
+		});
+		this.getUserDetails();
 	};
 
 	componentDidMount() {
@@ -131,6 +141,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
+		backgroundColor: '#F8BE85',
 	},
 	formContainer: {
 		flex: 1,
@@ -138,14 +149,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	formTextInput: {
-		width: '75%',
-		height: 35,
-		alignSelf: 'center',
-		borderColor: '#ffab91',
-		borderRadius: 10,
-		borderWidth: 1,
-		marginTop: 20,
-		padding: 10,
+		width: 300,
+		height: 40,
+		borderBottomWidth: 1,
+		borderColor: '#ff8a65',
+		fontSize: 20,
+		margin: 10,
+		color: '#ffffff',
+		paddingLeft: 10,
 	},
 	button: {
 		width: '75%',
